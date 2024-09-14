@@ -34,10 +34,10 @@ def parse_0_txt(file_path):
                 northing = float(proj_y)
 
                 # Create a transformer from EPSG:29903 to EPSG:4326
-                transformer = Transformer.from_crs("EPSG:29903", "EPSG:4326")
+                transformer = Transformer.from_crs("EPSG:29903", "EPSG:4326", always_xy=True)
 
                 # Transform the coordinates
-                latitude, longitude = transformer.transform(easting, northing)
+                longitude, latitude = transformer.transform(easting, northing)
 
                 record['latitude'] = latitude
                 record['longitude'] = longitude
@@ -72,18 +72,18 @@ def parse_8_txt(file_path):
             return None
 
         # Extract data from specified elements
-        elements = {
-            'name': 'htmlText',
-            'translation': 'htmlText',
-            'explanation': 'htmlText',
-        }
-        for elem_name, attr_name in elements.items():
+        elements = [
+            ('name', 'name', 'htmlText'),
+            ('translation', 'translation', 'htmlText'),
+            ('explanation', 'description', 'htmlText'),  # Map 'explanation' element to 'description' key
+        ]
+        for elem_name, key_name, attr_name in elements:
             elem = root.find(elem_name)
             if elem is not None:
-                record[elem_name] = elem.get(attr_name, '')
+                record[key_name] = elem.get(attr_name, '')
             else:
                 print(f"No <{elem_name}> element in {file_path}")
-                record[elem_name] = ''
+                record[key_name] = ''
     return record
 
 def process_directory(dirpath):
@@ -130,8 +130,7 @@ def write_csv(data_list, csv_file, csv_columns):
 
 def main():
     # Set the root directory where all the folders are located
-    root_dir = '/home/ubuntu-admin/Documents/projects/logainmneacha/data'  # Replace with the actual path
-
+    root_dir = '/home/ubuntu-admin/Documents/projects/logainmneacha/data'
     # List to store the data
     data_list = []
 
@@ -145,7 +144,7 @@ def main():
                 if record:
                     data_list.append(record)
             else:
-                print(f"Skipping directory {dir_path}: 'menuTabs' subdirectory not found")
+                print(f"Skipping directory {dir_path}: 'menuTab' subdirectory not found")
         else:
             print(f"Skipping {dir_path}: Not a directory")
 
@@ -153,7 +152,7 @@ def main():
     csv_columns = [
         'projection_x', 'projection_y',
         'latitude', 'longitude',
-        'name', 'translation', 'explanation'
+        'name', 'translation', 'description'  # Changed 'explanation' to 'description'
     ]
 
     csv_file = 'output.csv'
