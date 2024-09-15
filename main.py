@@ -151,7 +151,7 @@ def main():
     csv_columns = [
         'projection_x', 'projection_y',
         'latitude', 'longitude',
-        'name', 'translation', 'description'  # Changed 'explanation' to 'description'
+        'name', 'translation', 'description'
     ]
 
     csv_file = 'output.csv'
