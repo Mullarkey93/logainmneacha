@@ -130,7 +130,7 @@ def write_csv(data_list, csv_file, csv_columns):
 
 def main():
     # Set the root directory where all the folders are located
-    root_dir = '/home/ubuntu-admin/Documents/projects/logainmneacha/data'
+    root_dir = ''
     # List to store the data
     data_list = []
 
