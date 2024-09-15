@@ -75,7 +75,7 @@ def parse_8_txt(file_path):
         elements = [
             ('name', 'name', 'htmlText'),
             ('translation', 'translation', 'htmlText'),
-            ('explanation', 'description', 'htmlText'),  # Map 'explanation' element to 'description' key
+            ('explanation', 'description', 'htmlText'),
         ]
         for elem_name, key_name, attr_name in elements:
             elem = root.find(elem_name)
@@ -148,7 +148,6 @@ def main():
         else:
             print(f"Skipping {dir_path}: Not a directory")
 
-    # Define the CSV column names
     csv_columns = [
         'projection_x', 'projection_y',
         'latitude', 'longitude',
